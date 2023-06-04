@@ -6,7 +6,7 @@
 #define MAX_LENGTH 10
 #define CHANCES 5
 
-void printMenu(){
+void printBanner(){
     printf("=======================================\n");
     printf("          H  A  N  G  M  A  N          \n");
     printf("=======================================\n");
@@ -23,7 +23,6 @@ void printProgress(char w[], int p[]){
         }
     }
     printf("\n\n");
-    
 }
 
 
@@ -50,7 +49,7 @@ int checkAlreadyGuessed(char g[]){
 
 
 int main(){
-    printMenu();
+    printBanner();
     char word[MAX_LENGTH];
     int progress[MAX_LENGTH] = {0};
     char guess[2];
@@ -61,24 +60,30 @@ int main(){
     scanf("%s", word);
     
     while(1){
-        printProgress(word, progress);                      // Print Progress
-        printf("Chances Left: %d\n", chancesLeft);          // Print Chances Left
-        sleep(1);                                           // One Second Delay
-        printf("Guesser, Please Guess a Letter: ");         
-        scanf("%s", guess);                                 // Get Guess
-        if(!checkAlreadyGuessed(guess)){                    // Check for Redundant Guess
+        printProgress(word, progress);
+        printf("Chances Left: %d\n", chancesLeft);
+        printf("Guesser, Please Guess a Letter: ");      
+
+        // Prompt User to Input Guess
+        scanf("%s", guess);                                 
+        
+        if(!checkAlreadyGuessed(guess)){                    
             printf("You Guessed This Letter Already!\n");
             continue;
         }
-        for(unsigned int i = 0; i < strlen(word); i++){     // Check for Letter in Word
+
+        // Check for Letter in Word
+        for(unsigned int i = 0; i < strlen(word); i++){     
             if(strncmp(guess, &word[i], 1) == 0){
-                guessedCorrect = guessedCorrect + 1;        // Correct Guess
-                progress[i] = 1;                            // Update Progress
+                guessedCorrect = guessedCorrect + 1;        
+                progress[i] = 1;                            
             }else{
                 progress[i] = progress[i];
             }
         }
-        if(guessedCorrect == 0){                            // Update Chances
+        
+        // Update Chances
+        if(guessedCorrect == 0){
             printf("MISS!\n");
             chancesLeft = chancesLeft - 1;
             if(chancesLeft == 0){
@@ -90,12 +95,12 @@ int main(){
         }
         guessedCorrect = 0;
 
-        if(checkWin(word, progress) == 1){                  // Check For Win
+        // Check For Win
+        if(checkWin(word, progress) == 1){                  
             printProgress(word, progress);
             printf("You Win!\n");
             break;
         }
-
     }
 }
 
